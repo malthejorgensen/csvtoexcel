@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "csvtoexcel"
-version = "0.1.0"
+version = "0.1.1"
 description = "Command-line tool to convert CSV-files (.csv) to Excel-files (.xlsx)"
+readme = "README.md"
 authors = ["Malthe Jørgensen <malthe.jorgensen@gmail.com>"]
 homepage = "https://github.com/malthejorgensen/csvtoexcel"
 repository = "https://github.com/malthejorgensen/csvtoexcel"
