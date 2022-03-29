@@ -4,10 +4,16 @@ import re
 
 from openpyxl import load_workbook
 
-parser = argparse.ArgumentParser(description='Converts the first sheet of an .xlsx-file to a .csv-file')
+parser = argparse.ArgumentParser(
+    description='Converts the first sheet of an .xlsx-file to a .csv-file'
+)
 parser.add_argument('xlsxfile', help='The .xlsx file to be converted')
 parser.add_argument('-o,--output', dest='output', help='Name of the output file')
-parser.add_argument('-s,--sheet', dest='sheet', help='Name of sheet to convert to .xlsx. By default the first sheet will be converted')
+parser.add_argument(
+    '-s,--sheet',
+    dest='sheet',
+    help='Name of sheet to convert to .xlsx. By default the first sheet will be converted',
+)
 
 
 def main():
@@ -40,7 +46,6 @@ def main():
         for xls_cell in xls_row:
             csv_row.append(xls_cell.value)
         csv_rows.append(csv_row)
-        print(csv_row)
 
     if args.output:
         output_filename = args.output
