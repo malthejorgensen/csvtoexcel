@@ -3,6 +3,7 @@ import csv
 import re
 
 from openpyxl import Workbook
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('csvfile', help='The .csv file to be converted')
@@ -19,6 +20,19 @@ def main():
     args = parser.parse_args()
 
     with open(args.csvfile) as input_file:
+
+        # FROM: https://stackoverflow.com/a/68578582/118608
+        match = ILLEGAL_CHARACTERS_RE.search(input_file.read())
+        if match:
+            input_file.seek(0)
+            for lineno, line in enumerate(input_file.readlines()):
+                line_match = ILLEGAL_CHARACTERS_RE.search(line)
+                if line_match:
+                    raise ValueError(
+                        f'Illegal character in file on line {lineno + 1} at char {line_match.start()}'
+                    )
+        input_file.seek(0)
+
         reader = csv.reader(input_file)
 
         wb = Workbook()
