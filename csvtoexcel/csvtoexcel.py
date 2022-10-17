@@ -7,6 +7,12 @@ from openpyxl import Workbook
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('csvfile', help='The .csv file to be converted')
 parser.add_argument('-o,--output', dest='output', help='Name of the output file')
+parser.add_argument(
+    '-s,--auto-size',
+    action='store_true',
+    dest='auto_size',
+    help='Resize columns to fit content',
+)
 
 
 def main():
@@ -20,6 +26,22 @@ def main():
         ws1.title = 'Course'
         for row in reader:
             ws1.append(row)
+
+    if args.auto_size:
+        # Didn't auto size, but did make columns bigger
+        # From: https://stackoverflow.com/a/68196124/118608
+        # for idx, col in enumerate(ws1.columns, 1):
+        #     ws1.column_dimensions[get_column_letter(idx)].auto_size = True
+
+        # A combination of:
+        # - https://stackoverflow.com/a/58150605/118608
+        # - https://stackoverflow.com/a/39530676/118608
+        for col in ws1.columns:
+            column_letter = col[0].column_letter  # Get the column name
+            max_length = max(len(str(cell.value)) for cell in col)
+            # adjusted_width = (max_length + 2) * 1.2
+            adjusted_width = max_length
+            ws1.column_dimensions[column_letter].width = adjusted_width
 
     if args.output:
         output_filename = args.output
